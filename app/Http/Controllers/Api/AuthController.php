@@ -64,7 +64,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, true)) {
             return response()->json([
-                'success' => false,
+                'success' => true,
                 'message' => 'User login successfully'
             ]);
         }
