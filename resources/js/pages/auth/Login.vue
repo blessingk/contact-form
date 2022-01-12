@@ -59,11 +59,10 @@ export default {
                     this.$axios.post('api/login', {
                         email: this.email,
                         password: this.password
-                    })
+                        })
                         .then(response => {
-                            console.log(response.data)
                             if (response.data.success) {
-                                this.$router.go('/contacts')
+                                this.$router.push('/contacts')
                             } else {
                                 this.error = response.data.message
                             }
