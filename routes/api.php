@@ -23,5 +23,5 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function() {
-    Route::apiResource('Contacts', ContactController::class);
+    Route::apiResource('contacts', ContactController::class);
 });
