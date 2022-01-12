@@ -9,4 +9,5 @@ This is a laravel and vue based project
 ```4. generate applicarion key by running php artisan key:generate```<br>
 ```5. create the database and update .env file with your database-name, username and password```<br>
 ```6. run migrations using php artisan migrate```<br>
-```7. finally run php artisan serve and your project will be served on http://127.0.0.1:8000```
+```7. finally run php artisan serve and your project will be served on http://127.0.0.1:8000```<br>
+```8. As a final step you need to run npm install followed by npm run dev```

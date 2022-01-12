@@ -23,6 +23,10 @@ class ContactController extends Controller
      */
     private $contactService;
 
+    /**
+     * @param ContactRepository $contactRepository
+     * @param ContactService $contactService
+     */
     public function __construct(
         ContactRepository $contactRepository,
         ContactService $contactService
