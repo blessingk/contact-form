@@ -5,7 +5,6 @@ namespace App\Repositories\Contact;
 use App\Models\Contact;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Collection;
 
 class ContactRepository
 {
@@ -42,7 +41,7 @@ class ContactRepository
         if ($request->gender) {
             $query = $query->whereGender($request->gender);
         }
-        return $query->paginate(10);
+        return $query->paginate(30);
     }
 
     /**
