@@ -107,7 +107,6 @@ class ContactTest extends TestCase
      */
     public function test_create_contact_validation()
     {
-
         $data = [
             'name' => 'Tats',
             'email' => 'tates@gmail.com',
