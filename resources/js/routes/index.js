@@ -36,8 +36,8 @@ export const routes = [
         component: Contacts
     },
     {
-        name: 'create-contact',
-        path: '/contacts/create',
+        name: 'new-contact',
+        path: '/new-contact',
         component: CreateContact
     },
     {

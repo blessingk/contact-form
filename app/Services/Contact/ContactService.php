@@ -2,25 +2,19 @@
 
 namespace App\Services\Contact;
 
+use App\Mail\ContactMail;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Mail;
 
 class ContactService
 {
     /**
-     * @var Contact
-     */
-    private $contact;
-
-    /**
+     * Send contact email
      * @param Contact $contact
+     * @return void
      */
-    public function __construct(Contact $contact)
+    public function sendMail(Contact $contact): void
     {
-        $this->contact = $contact;
-    }
-
-    public function sendMail()
-    {
-
+        Mail::to($contact->email)->send(new ContactMail($contact));
     }
 }

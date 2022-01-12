@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\User\StoreUserRequest;
+use App\Repositories\User\UserRepository;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Session;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
@@ -16,26 +19,27 @@ class AuthController extends Controller
      */
     private $user;
 
-    public function __construct(User $user)
+    /**
+     * @param UserRepository $user
+     */
+    public function __construct(UserRepository $user)
     {
         $this->user = $user;
     }
 
     /**
-     * Register
+     * Register user
+     * @param StoreUserRequest $request
+     * @return JsonResponse
      */
-    public function register(Request $request)
+    public function register(StoreUserRequest $request): JsonResponse
     {
         try {
-            $user = new $this->user;
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->save();
+            $this->user->store($request->all());
 
             $success = true;
             $message = 'User register successfully';
-        } catch (\Illuminate\Database\QueryException $ex) {
+        } catch (QueryException $ex) {
             $success = false;
             $message = $ex->getMessage();
         }
@@ -47,38 +51,43 @@ class AuthController extends Controller
     }
 
     /**
-     * Login
+     * Login user
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $credentials = [
             'email' => $request->email,
             'password' => $request->password
         ];
 
-        $success = false;
-        $message = 'Unauthorised';
         if (Auth::attempt($credentials, true)) {
-            $success = true;
-            $message = 'User login successfully';
+            return response()->json([
+                'success' => false,
+                'message' => 'User login successfully'
+            ]);
         }
 
         return response()->json([
-            'success' => $success,
-            'message' => $message
+            'success' => false,
+            'message' => 'Unauthorised please try again'
         ]);
     }
 
     /**
-     * Logout
+     * Logout user
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function logout()
+    public function logout(Request $request): JsonResponse
     {
         try {
-            Session::flush();
+            $request->session()->flush();
+            $request->session()->regenerate();
             $success = true;
             $message = 'Successfully logged out';
-        } catch (\Illuminate\Database\QueryException $ex) {
+        } catch (\Exception $ex) {
             $success = false;
             $message = $ex->getMessage();
         }

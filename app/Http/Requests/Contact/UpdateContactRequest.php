@@ -4,7 +4,7 @@ namespace App\Http\Requests\Contact;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreContactRequest extends FormRequest
+class UpdateContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class StoreContactRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => ['required', 'email', 'unique:contacts'],
+            'email' => ['required', 'email'],
             'gender' => 'required',
             'content' => 'required'
         ];

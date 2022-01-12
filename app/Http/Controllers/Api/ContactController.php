@@ -3,84 +3,87 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Http\Requests\Contact\{StoreContactRequest, UpdateContactRequest};
+use App\Http\Resources\Contact\ContactResource;
+use App\Models\Contact;
+use App\Repositories\Contact\ContactRepository;
+use App\Services\Contact\ContactService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class ContactController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var ContactRepository
      */
-    public function index()
+    private $contactRepository;
+    /**
+     * @var ContactService
+     */
+    private $contactService;
+
+    public function __construct(
+        ContactRepository $contactRepository,
+        ContactService $contactService
+    )
     {
-        //
+        $this->contactRepository = $contactRepository;
+        $this->contactService    = $contactService;
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Get all contacts
+     * @param Request $request
+     * @return AnonymousResourceCollection
      */
-    public function create()
+    public function index(Request $request): AnonymousResourceCollection
     {
-        //
+        return ContactResource::collection($this->contactRepository->search($request));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store new contact
+     * @param StoreContactRequest $request
+     * @return ContactResource
      */
-    public function store(Request $request)
+    public function store(StoreContactRequest $request): ContactResource
     {
-        //
+        $contact = $this->contactRepository->store($request->all());
+        $this->contactService->sendMail($contact);
+        return new ContactResource($contact);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
+     * Get single contact
+     * @param Contact $contact
+     * @return ContactResource
      */
-    public function show(Contact $contact)
+    public function show(Contact $contact): ContactResource
     {
-        //
+        return new ContactResource($contact);
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
+     * Update contact
+     * @param UpdateContactRequest $request
+     * @param Contact $contact
+     * @return Response
      */
-    public function edit(Contact $contact)
+    public function update(UpdateContactRequest $request, Contact $contact): Response
     {
-        //
+        $this->contactRepository->update($contact, $request->all());
+        return response($contact, Response::HTTP_ACCEPTED);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
+     * Delete contact
+     * @param Contact $contact
+     * @return Response
      */
-    public function update(Request $request, Contact $contact)
+    public function destroy(Contact $contact): Response
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Contact $contact)
-    {
-        //
+        $this->contactRepository->delete($contact);
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
