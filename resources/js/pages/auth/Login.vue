@@ -54,11 +54,11 @@ export default {
     methods: {
         handleSubmit(e) {
             e.preventDefault()
-            if (this.password.length > 0) {
+            if (this.password.length > 0 && this.email.length > 0) {
                 this.$axios.get('/sanctum/csrf-cookie').then(response => {
                     this.$axios.post('api/login', {
-                        email: this.email,
-                        password: this.password
+                            email: this.email,
+                            password: this.password
                         })
                         .then(response => {
                             if (response.data.success) {
