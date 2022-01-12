@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <label>Filter gender</label>
                     <select class="form-select" @change="filterContacts" v-model="filterForm.gender">
-                        <option value="null">--Select Gender--</option>
+                        <option :value="null">--Select Gender--</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>

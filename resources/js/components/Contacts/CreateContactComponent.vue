@@ -15,7 +15,7 @@
                     <div class="form-group mt-2">
                         <label>Gender</label>
                         <select class="form-select" v-model="contact.gender">
-                            <option value="null">--Select Gender--</option>
+                            <option :value="null">--Select Gender--</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
