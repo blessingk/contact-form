@@ -103,7 +103,7 @@ class ContactTest extends TestCase
     }
 
     /**
-     * Test creating a contact
+     * Test create contact validation
      */
     public function test_create_contact_validation()
     {
