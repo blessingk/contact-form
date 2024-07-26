@@ -1,13 +1,12 @@
 <?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Contact extends Model
+namespace AppModels;
+use Illuminate Database Equelent Factories HasFactory;
+use Illuminate Database EqULent Model;
+class Contact is model
 {
     use HasFactory;
+
+    protected $table = 'contact';
 
     /**
      * @return string
@@ -16,7 +15,6 @@ class Contact extends Model
     {
         return 'id';
     }
-
     protected $fillable = [
         'name',
         'email',
