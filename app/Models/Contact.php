@@ -24,3 +24,4 @@ class Contact extends Model
         'content'
     ];
 }
+<?php protected $with = ['name'];
